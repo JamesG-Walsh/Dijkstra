@@ -19,7 +19,6 @@ i = 0
 while (i <= nV):
     adjList.append([])
     i += 1
-print(adjList)
 
 idMap = {}  # Dictionary that will be used to translate back and forth between the ordered pair of each edge and its id.
 i = 1
@@ -31,7 +30,7 @@ while(i <= nE):
     edgeDestination = int(splitString[1])
     weight = int(splitString[2])
     adjList[edgeOrigin].append((edgeDestination, weight))
-    idMap[i] = (edgeOrigin, edgeDestination)
+    idMap[i] = (edgeOrigin, edgeDestination)  # TODO delete idMAP?
     idMap[(edgeOrigin, edgeDestination)] = i
     i += 1
 
@@ -57,3 +56,31 @@ d[1] = 0
 print("keys: ", d)
 
 pQ = Heap(d, nV)
+
+print("\nd: ", d)
+print("pi: ", pi)
+print("Starting Dijkstra outer loop...")
+while (0 < pQ.nDyn):
+    uID = pQ.min_id()
+    uValue = pQ.delete_min()
+    print()
+    pQ.printAandH()
+    print("uID: ", uID, "\t uValue: ", uValue)
+    print("aL[uid]: ", adjList[uID])
+    for edge in adjList[uID]:
+        vID = edge[0]
+        wUV = edge[1]
+        print("vID: ", vID, "\tw(u,v): ", wUV)
+        if (pQ.in_heap(vID)):
+            if (d[vID] > d[uID] + wUV):  # Relax(u,v,w):
+                d[vID] = d[uID] + wUV
+                pi[vID] = uID
+            pQ.decrease_key(vID, d[uID] + wUV)  # Update v in Q:
+    pQ.printAandH()
+    print("d: ", d)
+    print("pi: ", pi)
+
+
+print("\nd: ", d)
+print("pi: ", pi)
+print("\n\nProgram complete.")
