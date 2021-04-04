@@ -2,7 +2,8 @@ import math
 import logging
 logging.basicConfig(level=logging.DEBUG)
 
-class heap:
+
+class Heap:
     def __init__(self, keys, n):
         self.n = n
         self.A = keys
@@ -21,9 +22,9 @@ class heap:
 
         i = n - 1
         while(1 <= i):
-            L = self.A[self.H[2*i]]
-            R = self.A[self.H[2*i + 1]]
-            print("L: ", L, "\tR: ", R)
+            left = self.A[self.H[2*i]]
+            right = self.A[self.H[2*i + 1]]
+            print("L: ", left, "\tR: ", right)
             if(self.A[self.H[2*i]] < self.A[self.H[2*i + 1]]):
                 self.H[i] = self.H[2*i]
                 print("L H[", i, "]= ", self.H[i])
@@ -34,9 +35,13 @@ class heap:
         print("H: ", self.H)
         print("A: ", self.A)
 
-
     def __in_heap(self, id):
-        2   # TODO search H contents?
+        if self.H[id + self.n - 1] == 0:  # element has been extracted
+            return False
+        elif(id < 1 or self.n < id):  # id out of bounds
+            return False
+        else:
+            return True
 
     def __min_key(self):
         return self.A[self.H[1]]

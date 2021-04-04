@@ -1,4 +1,4 @@
-from heap import heap
+from Heap import Heap
 import logging
 logging.basicConfig(level=logging.DEBUG)
 
@@ -11,16 +11,15 @@ nV = int(fileAsList[0])
 
 nE = len(fileAsList) - 1
 
-logging.info("Number of Vertices: %d", nV)
-logging.info("Number of Edges: %d", nE)
+print("Number of Vertices: %d", nV)
+print("Number of Edges: %d", nE)
 
 adjList = []
 i = 0
 while (i <= nV):
     adjList.append([])
     i += 1
-
-logging.debug(adjList)
+print(adjList)
 
 idMap = {}  # Dictionary that will be used to translate back and forth between the ordered pair of each edge and its id.
 i = 1
@@ -36,11 +35,11 @@ while(i <= nE):
     idMap[(edgeOrigin, edgeDestination)] = i
     i += 1
 
-logging.debug(adjList)
+print(adjList)
 
 print("Printing the input graph in adjacency list representation...")
 i = 1
-while(i <= nV): # iterate through vertices
+while(i <= nV):  # iterate through vertices
     for edge in adjList[i]:  # iterate through the edges of each vertex
         print("(", i, "->", edge[0], "):", edge[1], end="\t\t")  # TODO clean up formatting if time permits
     print()
@@ -57,4 +56,4 @@ d[1] = 0
 
 print("keys: ", d)
 
-pQ = heap(d, nV)
+pQ = Heap(d, nV)
