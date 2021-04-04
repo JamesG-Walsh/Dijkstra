@@ -4,7 +4,7 @@ logging.basicConfig(level=logging.DEBUG)
 
 class heap:
     def __init__(self, keys, n):
-        self.nV = n
+        self.n = n
         self.A = keys
         self.H = {}
 
@@ -32,6 +32,7 @@ class heap:
                 print("R H[", i, "]= ", self.H[i])
             i -= 1
         print("H: ", self.H)
+        print("A: ", self.A)
 
 
     def __in_heap(self, id):
@@ -46,17 +47,26 @@ class heap:
     def __key(self, id):
         return self.A[id]
 
-    def __delete_min(self):
-        6
+    def __delete_min(self):  # aka extract_min()
+        self.A[0] = float('inf')
+        self.H[self.H[1] + self.n - 1] = 0
+        v = self.A[self.H[1]]
+        i = math.floor((self.H[1] + self.n - 1) / 2)
+        while(i >= 1):
+            if(self.A[self.H[2*i]] <= self.A[self.H[2*i + 1]]):
+                self.H[i] = self.H[2*i]
+            else:
+                self.H[i] = self.H[2*i + 1]
+        return v
 
     def __decrease_key(self, id, new_key):
         if (self.A[id] <= new_key):
             return  # no update required
         self.A[id] = new_key
-        id = math.floor((id + self.nV - 1) / 2)
-        while(id >= 1):
-            if(self.A[self.H[2*id]] < self.A[self.H[2*id + 1]]):
-                self.H[id] = self.H[2*id]
+        i = math.floor((id + self.n - 1) / 2)
+        while(i >= 1):
+            if(self.A[self.H[2*i]] < self.A[self.H[2*i + 1]]):
+                self.H[i] = self.H[2*i]
             else:
-                self.H[id] = self.H[2*id + 1]
-            id = math.floor(id / 2)
+                self.H[i] = self.H[2*i + 1]
+            i = math.floor(i / 2)
