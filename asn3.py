@@ -63,7 +63,6 @@ print("Starting Dijkstra outer loop...")
 while (0 < pQ.nDyn):
     print()
     uID = pQ.min_id()
-    print("uID: ", uID)
     uValue = pQ.delete_min()
     pQ.printAandH()
     print("uID: ", uID, "\t uValue: ", uValue)
