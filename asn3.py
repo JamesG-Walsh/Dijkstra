@@ -19,10 +19,9 @@ while (i <= nV):
     adjList.append([])
     i += 1
 
-# adjList[1].append(1)
-# adjList[24].append(24)
 logging.debug(adjList)
 
+idMap = {}  # Dictionary that will be used to translate back and forth between the ordered pair of each edge and its id.
 i = 1
 while(i <= nE):
     # logging.debug(i)
@@ -32,6 +31,8 @@ while(i <= nE):
     edgeDestination = int(splitString[1])
     weight = int(splitString[2])
     adjList[edgeOrigin].append((edgeDestination, weight))
+    idMap[i] = (edgeOrigin, edgeDestination)
+    idMap[(edgeOrigin, edgeDestination)] = i
     i += 1
 
 logging.debug(adjList)
@@ -39,7 +40,20 @@ logging.debug(adjList)
 print("Printing the input graph in adjacency list representation...")
 i = 1
 while(i <= nV): # iterate through vertices
-    for edge in adjList[i]: #iterate through the edges of each vertex
-        print("(", i, "->", edge[0], "):", edge[1], end="\t\t")
+    for edge in adjList[i]:  # iterate through the edges of each vertex
+        print("(", i, "->", edge[0], "):", edge[1], end="\t\t")  # TODO clean up formatting if time permits
     print()
     i += 1
+
+d = {}
+pi = {}
+i = 1
+while(i <= nV):  # loop performs Initialize_Single_Source()
+    d[i] = float('inf')
+    pi[i] = None
+    i += 1
+d[1] = 0
+
+print("keys: ", d)
+
+pQ = heap(d, nV)
