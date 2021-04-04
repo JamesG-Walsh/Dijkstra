@@ -20,7 +20,6 @@ while (i <= nV):
     adjList.append([])
     i += 1
 
-idMap = {}  # Dictionary that will be used to translate back and forth between the ordered pair of each edge and its id.
 i = 1
 while(i <= nE):
     # logging.debug(i)
@@ -30,8 +29,6 @@ while(i <= nE):
     edgeDestination = int(splitString[1])
     weight = int(splitString[2])
     adjList[edgeOrigin].append((edgeDestination, weight))
-    idMap[i] = (edgeOrigin, edgeDestination)  # TODO delete idMAP?
-    idMap[(edgeOrigin, edgeDestination)] = i
     i += 1
 
 print(adjList)
@@ -44,35 +41,40 @@ while(i <= nV):  # iterate through vertices
     print()
     i += 1
 
+keys = [None]
 d = {}
 pi = {}
 i = 1
 while(i <= nV):  # loop performs Initialize_Single_Source()
     d[i] = float('inf')
+    keys.append(float('inf'))
     pi[i] = None
     i += 1
 d[1] = 0
+keys[1] = 0
 
-print("keys: ", d)
+print("keys: ", keys)
 
-pQ = Heap(d, nV)
+pQ = Heap(keys, nV)
 
 print("\nd: ", d)
 print("pi: ", pi)
 print("Starting Dijkstra outer loop...")
 while (0 < pQ.nDyn):
-    uID = pQ.min_id()
-    uValue = pQ.delete_min()
     print()
+    uID = pQ.min_id()
+    print("uID: ", uID)
+    uValue = pQ.delete_min()
     pQ.printAandH()
     print("uID: ", uID, "\t uValue: ", uValue)
-    print("aL[uid]: ", adjList[uID])
+    print("adjList[uid]: ", adjList[uID])
     for edge in adjList[uID]:
         vID = edge[0]
         wUV = edge[1]
         print("vID: ", vID, "\tw(u,v): ", wUV)
         if (pQ.in_heap(vID)):
             if (d[vID] > d[uID] + wUV):  # Relax(u,v,w):
+                print("relaxing", end="\t")
                 d[vID] = d[uID] + wUV
                 pi[vID] = uID
             pQ.decrease_key(vID, d[uID] + wUV)  # Update v in Q:

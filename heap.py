@@ -79,8 +79,10 @@ class Heap:
             print("ID out of bounds.")
             return
         if (self.A[id] <= new_key):
+            print("no update required.")
             return  # no update required
         self.A[id] = new_key
+        print("A[", id, "]= ", new_key)
         i = math.floor((id + self.n - 1) / 2)
         while(i >= 1):
             if(self.A[self.H[2*i]] < self.A[self.H[2*i + 1]]):
