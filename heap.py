@@ -1,3 +1,4 @@
+import math
 import logging
 logging.basicConfig(level=logging.DEBUG)
 
@@ -34,7 +35,7 @@ class heap:
 
 
     def __in_heap(self, id):
-        2
+        2   # TODO search H contents?
 
     def __min_key(self):
         return self.A[self.H[1]]
@@ -43,10 +44,19 @@ class heap:
         return self.H[1]
 
     def __key(self, id):
-        return self.A[i]
+        return self.A[id]
 
     def __delete_min(self):
         6
 
     def __decrease_key(self, id, new_key):
-        7
+        if (self.A[id] <= new_key):
+            return  # no update required
+        self.A[id] = new_key
+        id = math.floor((id + self.nV - 1) / 2)
+        while(id >= 1):
+            if(self.A[self.H[2*id]] < self.A[self.H[2*id + 1]]):
+                self.H[id] = self.H[2*id]
+            else:
+                self.H[id] = self.H[2*id + 1]
+            id = math.floor(id / 2)
