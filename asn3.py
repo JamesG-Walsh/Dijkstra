@@ -11,7 +11,6 @@ with open(infile, "r") as file1:
     fileAsList = file1.readlines()
 
 nV = int(fileAsList[0])
-
 nE = len(fileAsList) - 1
 
 print("\nNumber of Vertices: ", nV)
@@ -25,9 +24,7 @@ while (i <= nV):
 
 i = 1
 while(i <= nE):
-    # logging.debug(i)
     splitString = fileAsList[i].split()
-    # logging.debug(splitString)
     edgeOrigin = int(splitString[0])
     edgeDestination = int(splitString[1])
     weight = int(splitString[2])
@@ -61,35 +58,35 @@ pi[1] = "Source"
 pQ = Heap(keys, nV)
 extractionOrder = []  # Lists the vertices in the order they were extracted so that the edges can be printed in the correct order later.
 
-print("\nd: ", d)
-print("pi: ", pi)
-print("Starting Dijkstra outer loop...")
+# print("\nd: ", d)
+# print("pi: ", pi)
+logging.debug("Starting Dijkstra outer loop...")
 while (0 < pQ.nDyn):
-    print()
+    # print()
     uID = pQ.min_id()
     extractionOrder.append(uID)
     uValue = pQ.delete_min()
-    pQ.printAandH()
-    print("uID: ", uID, "\t uValue: ", uValue)
-    print("adjList[uid]: ", adjList[uID])
+    # pQ.printAandH()
+    # print("uID: ", uID, "\t uValue: ", uValue)
+    # print("adjList[uid]: ", adjList[uID])
     for edge in adjList[uID]:
         vID = edge[0]
         wUV = edge[1]
-        print("vID: ", vID, "\tw(u,v): ", wUV)
+        # print("vID: ", vID, "\tw(u,v): ", wUV)
         if (pQ.in_heap(vID)):
             if (d[vID] > d[uID] + wUV):  # Relax(u,v,w):
                 d[vID] = d[uID] + wUV
                 pi[vID] = uID
                 # print("(", uID, ", ", vID, ") : ", d[vID])
             pQ.decrease_key(vID, d[uID] + wUV)  # Update v in Q:
-    pQ.printAandH()
-    print("d: ", d)
-    print("pi: ", pi)
+    # pQ.printAandH()
+    # print("d: ", d)
+    # print("pi: ", pi)
 
-print("\nDijkstra's algorithm complete.")
+logging.debug("Dijkstra's algorithm complete.")
 print("d: ", d)
 print("pi: ", pi)
-print("Extraction Order: ", extractionOrder)
+logging.info("Extraction Order: " + str(extractionOrder))
 srcList = list(pi.values())
 
 adjListSSP = {}  # similar to adjList but will only contain the shortest path tree edges
@@ -98,18 +95,20 @@ while(i <= nV):
     adjListSSP[i] = []
     i += 1
 
-loopI = 2  # skip 1 because that's the source
-while(loopI <= len(srcList)):
-    adjListSSP[pi[loopI]].append((loopI, d[loopI]))
-    loopI += 1
-print(adjListSSP)
+i = 2  # skip 1 because that's the source
+while(i <= len(srcList)):
+    if (d[i] < float('inf')):  # check to make sure a path was found
+        adjListSSP[pi[i]].append((i, d[i]))
+    i += 1
+# print(adjListSSP)
 
 print("\nFINAL RESULT: SHORTEST PATH TREE EDGES IN ORDER PRODUCED BY DIJKSTRA'S ALGORITHM")
 for vertexID in extractionOrder:
-    for edge in adjListSSP[vertexID]:
-        i = vertexID
-        j = edge[0]
-        w = edge[1]
-        print("(", i, ",", j, ") : ", w)
+    i = vertexID
+    if (0 < i) and (d[i] < float('inf')):  # check to make sure a path was found
+        for edge in adjListSSP[vertexID]:
+            j = edge[0]
+            w = edge[1]
+            print("(", i, ",\t", j, ") :\t", w)
 
 print("\n\nProgram complete.")

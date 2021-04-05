@@ -22,26 +22,26 @@ class Heap:
         while (i <= n):
             self.H[i + n - 1] = i
             i += 1
-        print("H: ", self.H)
+        # print("H: ", self.H)
 
         i = n - 1
         while(1 <= i):
             left = self.A[self.H[2*i]]
             right = self.A[self.H[2*i + 1]]
-            print("L: ", left, "\tR: ", right)
+            # print("L: ", left, "\tR: ", right)
             if(self.A[self.H[2*i]] < self.A[self.H[2*i + 1]]):
                 self.H[i] = self.H[2*i]
-                print("L H[", i, "]= ", self.H[i])
+                # print("L H[", i, "]= ", self.H[i])
             else:
                 self.H[i] = self.H[2*i + 1]
-                print("R H[", i, "]= ", self.H[i])
+                # print("R H[", i, "]= ", self.H[i])
             i -= 1
-        print("H: ", self.H)
-        print("A: ", self.A, "\n")
+        # print("H: ", self.H)
+        # print("A: ", self.A, "\n")
 
     def in_heap(self, id):
         if(id < 1 or self.n < id):  # id out of bounds
-            print("ID out of bounds.")
+            logging.error("ID out of bounds.")
             return False
         elif self.H[id + self.n - 1] == 0:  # element has been extracted
             return False
@@ -56,13 +56,13 @@ class Heap:
 
     def key(self, id):
         if(id < 1 or self.n < id):  # id out of bounds
-            print("ID out of bounds.")
+            logging.error("ID out of bounds.")
         else:
             return self.A[id]
 
     def delete_min(self):  # aka extract_min()
         if(self.nDyn <= 0):
-            print("Heap size is already 0.")
+            logging.error("Heap size is already 0.")
             return
         self.A[0] = float('inf')
         self.H[self.H[1] + self.n - 1] = 0
@@ -79,13 +79,13 @@ class Heap:
 
     def decrease_key(self, id, new_key):
         if(id < 1 or self.n < id):  # id out of bounds
-            print("ID out of bounds.")
+            logging.error("ID out of bounds.")
             return
         if (self.A[id] <= new_key):
-            print("no update required.")
+            logging.debug("no update required.")
             return  # no update required
         self.A[id] = new_key
-        print("A[", id, "]= ", new_key)
+        # ("A[", id, "]= ", new_key)
         i = math.floor((id + self.n - 1) / 2)
         while(i >= 1):
             if(self.A[self.H[2*i]] < self.A[self.H[2*i + 1]]):
