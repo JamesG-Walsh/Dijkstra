@@ -3,7 +3,7 @@
 
 from Heap import Heap
 import logging
-logging.basicConfig(level=logging.WARNING)
+logging.basicConfig(level=logging.INFO)
 
 infile = "infile.txt"  # TODO make this dynamic with a script
 # infile = "test2.txt"  # S1 T2 X3 Y4 Z5
