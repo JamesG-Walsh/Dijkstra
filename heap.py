@@ -1,3 +1,6 @@
+# CS3340B       Winter 2021 Assignment 3    Due: Apr 6, 2021
+# James Walsh   jwalsh57    250481718
+
 import math
 import logging
 logging.basicConfig(level=logging.DEBUG)

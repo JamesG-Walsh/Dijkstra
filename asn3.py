@@ -1,3 +1,6 @@
+# CS3340B       Winter 2021 Assignment 3    Due: Apr 6, 2021
+# James Walsh   jwalsh57    250481718
+
 from Heap import Heap
 import logging
 logging.basicConfig(level=logging.DEBUG)
@@ -11,8 +14,8 @@ nV = int(fileAsList[0])
 
 nE = len(fileAsList) - 1
 
-print("Number of Vertices: %d", nV)
-print("Number of Edges: %d", nE)
+print("\nNumber of Vertices: ", nV)
+print("Number of Edges: ", nE)
 
 adjList = []
 i = 0
@@ -30,16 +33,16 @@ while(i <= nE):
     weight = int(splitString[2])
     adjList[edgeOrigin].append((edgeDestination, weight))
     i += 1
+# print(adjList)
 
-print(adjList)
-
-print("Printing the input graph in adjacency list representation...")
+print("\nPrinting the input graph in adjacency list representation...")
 i = 1
 while(i <= nV):  # iterate through vertices
     for edge in adjList[i]:  # iterate through the edges of each vertex
         print("(", i, "->", edge[0], "):", edge[1], end="\t\t")  # TODO clean up formatting if time permits
     print()
     i += 1
+print()
 
 keys = [None]
 d = {}
@@ -52,10 +55,11 @@ while(i <= nV):  # loop performs Initialize_Single_Source()
     i += 1
 d[1] = 0
 keys[1] = 0
+pi[1] = "Source"
 
-print("keys: ", keys)
-
+# print("keys: ", keys)
 pQ = Heap(keys, nV)
+extractionOrder = []  # Lists the vertices in the order they were extracted so that the edges can be printed in the correct order later.
 
 print("\nd: ", d)
 print("pi: ", pi)
@@ -63,6 +67,7 @@ print("Starting Dijkstra outer loop...")
 while (0 < pQ.nDyn):
     print()
     uID = pQ.min_id()
+    extractionOrder.append(uID)
     uValue = pQ.delete_min()
     pQ.printAandH()
     print("uID: ", uID, "\t uValue: ", uValue)
@@ -73,15 +78,38 @@ while (0 < pQ.nDyn):
         print("vID: ", vID, "\tw(u,v): ", wUV)
         if (pQ.in_heap(vID)):
             if (d[vID] > d[uID] + wUV):  # Relax(u,v,w):
-                print("relaxing", end="\t")
                 d[vID] = d[uID] + wUV
                 pi[vID] = uID
+                # print("(", uID, ", ", vID, ") : ", d[vID])
             pQ.decrease_key(vID, d[uID] + wUV)  # Update v in Q:
     pQ.printAandH()
     print("d: ", d)
     print("pi: ", pi)
 
-
-print("\nd: ", d)
+print("\nDijkstra's algorithm complete.")
+print("d: ", d)
 print("pi: ", pi)
+print("Extraction Order: ", extractionOrder)
+srcList = list(pi.values())
+
+adjListSSP = {}  # similar to adjList but will only contain the shortest path tree edges
+i = 1
+while(i <= nV):
+    adjListSSP[i] = []
+    i += 1
+
+loopI = 2  # skip 1 because that's the source
+while(loopI <= len(srcList)):
+    adjListSSP[pi[loopI]].append((loopI, d[loopI]))
+    loopI += 1
+print(adjListSSP)
+
+print("\nFINAL RESULT: SHORTEST PATH TREE EDGES IN ORDER PRODUCED BY DIJKSTRA'S ALGORITHM")
+for vertexID in extractionOrder:
+    for edge in adjListSSP[vertexID]:
+        i = vertexID
+        j = edge[0]
+        w = edge[1]
+        print("(", i, ",", j, ") : ", w)
+
 print("\n\nProgram complete.")
