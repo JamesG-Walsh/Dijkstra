@@ -3,10 +3,10 @@
 
 from Heap import Heap
 import logging
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.WARNING)
 
-# infile = "infile.txt"  # TODO make this dynamic with a script
-infile = "test2.txt"  # S1 T2 X3 Y4 Z5
+infile = "infile.txt"  # TODO make this dynamic with a script
+# infile = "test2.txt"  # S1 T2 X3 Y4 Z5
 with open(infile, "r") as file1:
     fileAsList = file1.readlines()
 
