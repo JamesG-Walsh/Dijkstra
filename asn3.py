@@ -1,18 +1,19 @@
 # CS3340B       Winter 2021 Assignment 3    Due: Apr 6, 2021
 # James Walsh   jwalsh57    250481718
 
-from Heap import Heap
+import sys
+from heap import Heap
 import logging
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.WARNING)
 
-infile = "infile.txt"  # TODO make this dynamic with a script
-# infile = "test2.txt"  # S1 T2 X3 Y4 Z5
+nArgs = len(sys.argv)
+logging.debug("Num args passed: " + str(nArgs))
+infile = sys.argv[1]
 with open(infile, "r") as file1:
     fileAsList = file1.readlines()
 
 nV = int(fileAsList[0])
 nE = len(fileAsList) - 1
-
 print("\nNumber of Vertices: ", nV)
 print("Number of Edges: ", nE)
 
@@ -84,9 +85,9 @@ while (0 < pQ.nDyn):
     # print("pi: ", pi)
 
 logging.debug("Dijkstra's algorithm complete.")
-print("d: ", d)
-print("pi: ", pi)
-logging.info("Extraction Order: " + str(extractionOrder))
+# print("d: ", d)
+# print("pi: ", pi)
+logging.info("\tExtraction Order: " + str(extractionOrder))
 srcList = list(pi.values())
 
 adjListSSP = {}  # similar to adjList but will only contain the shortest path tree edges
