@@ -2,9 +2,22 @@
 # James Walsh   jwalsh57    250481718
 
 import sys
+import math
 from heap import Heap
 import logging
 logging.basicConfig(level=logging.WARNING)
+
+
+def printSpaces(n):
+    """
+    Helps with formatting the output
+    :param n:
+    :return:
+    """
+    num = 1
+    while (num <= n):
+        print(" ", end="")
+        num += 1
 
 nArgs = len(sys.argv)
 logging.debug("Num args passed: " + str(nArgs))
@@ -23,21 +36,34 @@ while (i <= nV):
     adjList.append([])
     i += 1
 
+maxWeightEdge = 0
 i = 1
 while(i <= nE):
     splitString = fileAsList[i].split()
     edgeOrigin = int(splitString[0])
     edgeDestination = int(splitString[1])
     weight = int(splitString[2])
+    maxWeightEdge = max(maxWeightEdge, weight)
     adjList[edgeOrigin].append((edgeDestination, weight))
     i += 1
 # print(adjList)
+
+vDigs = len(str(nV))
+logging.debug("vDigs: %d", vDigs)
+wDigs = len(str(maxWeightEdge))
+logging.debug("wDigs: %d", wDigs)
 
 print("\nPrinting the input graph in adjacency list representation...")
 i = 1
 while(i <= nV):  # iterate through vertices
     for edge in adjList[i]:  # iterate through the edges of each vertex
-        print("(", i, "->", edge[0], "):", edge[1], end="\t\t")  # TODO clean up formatting if time permits
+        print("(", end="")
+        printSpaces(vDigs - len(str(i)))
+        print(i, "-> ", end="")
+        printSpaces(vDigs-len(str(edge[0])))
+        print(edge[0], "): ", end="")
+        printSpaces(wDigs-len(str(edge[1])))
+        print(edge[1], end="\t\t")
     print()
     i += 1
 print()
@@ -96,12 +122,15 @@ while(i <= nV):
     adjListSSP[i] = []
     i += 1
 
+maxD = 0
 i = 2  # skip 1 because that's the source
 while(i <= len(srcList)):
     if (d[i] < float('inf')):  # check to make sure a path was found
         adjListSSP[pi[i]].append((i, d[i]))
+        maxD = max(maxD, d[i])
     i += 1
 # print(adjListSSP)
+maxDdigs = len(str(maxD))
 
 print("\nFINAL RESULT: SHORTEST PATH TREE EDGES IN ORDER PRODUCED BY DIJKSTRA'S ALGORITHM")
 for vertexID in extractionOrder:
@@ -110,6 +139,13 @@ for vertexID in extractionOrder:
         for edge in adjListSSP[vertexID]:
             j = edge[0]
             w = edge[1]
-            print("(", i, ",\t", j, ") :\t", w)
+            # print("(", i, ",\t", j, ")\t:", w)
+            print("(", end="")
+            printSpaces(vDigs - len(str(i)))
+            print(i, ", ", end="")
+            printSpaces(vDigs - len(str(j)))
+            print(j, "): ", end="")
+            printSpaces(maxDdigs - len(str(w)))
+            print(w)
 
 print("\n\nProgram complete.")
