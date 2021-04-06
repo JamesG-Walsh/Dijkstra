@@ -1,24 +1,99 @@
+# CS3340B       Winter 2021 Assignment 3    Due: Apr 6, 2021
+# James Walsh   jwalsh57    250481718
+
+import math
 import logging
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.INFO)
 
-class heap:
+
+class Heap:
     def __init__(self, keys, n):
-        1
+        self.n = n  # n holds original size, doesn't update with delete_min()
+        self.nDyn = n  # nDyn will hold the current heap size (updates with delete_min())
+        self.A = keys
+        self.H = {}
 
-    def __in_heap(self, id):
-        2
+        i = 1
+        while(i <= n - 1):
+            self.H[i] = None
+            i += 1
 
-    def __min_key(self):
-        3
+        i = 1
+        while (i <= n):
+            self.H[i + n - 1] = i
+            i += 1
+        # print("H: ", self.H)
 
-    def __mind_id(self):
-        4
+        i = n - 1
+        while(1 <= i):
+            left = self.A[self.H[2*i]]
+            right = self.A[self.H[2*i + 1]]
+            # print("L: ", left, "\tR: ", right)
+            if(self.A[self.H[2*i]] < self.A[self.H[2*i + 1]]):
+                self.H[i] = self.H[2*i]
+                # print("L H[", i, "]= ", self.H[i])
+            else:
+                self.H[i] = self.H[2*i + 1]
+                # print("R H[", i, "]= ", self.H[i])
+            i -= 1
+        # print("H: ", self.H)
+        # print("A: ", self.A, "\n")
 
-    def __key(self, id):
-        5
+    def in_heap(self, id):
+        if(id < 1 or self.n < id):  # id out of bounds
+            logging.error("ID out of bounds.")
+            return False
+        elif self.H[id + self.n - 1] == 0:  # element has been extracted
+            return False
+        else:
+            return True
 
-    def __delete_min(self):
-        6
+    def min_key(self):
+        return self.A[self.H[1]]
 
-    def __decrease_key(self, id, new_key):
-        7
+    def min_id(self):
+        return self.H[1]
+
+    def key(self, id):
+        if(id < 1 or self.n < id):  # id out of bounds
+            logging.error("ID out of bounds.")
+        else:
+            return self.A[id]
+
+    def delete_min(self):  # aka extract_min()
+        if(self.nDyn <= 0):
+            logging.error("Heap size is already 0.")
+            return
+        self.A[0] = float('inf')
+        self.H[self.H[1] + self.n - 1] = 0
+        v = self.A[self.H[1]]
+        i = math.floor((self.H[1] + self.n - 1) / 2)
+        while(i >= 1):
+            if(self.A[self.H[2*i]] <= self.A[self.H[2*i + 1]]):
+                self.H[i] = self.H[2*i]
+            else:
+                self.H[i] = self.H[2*i + 1]
+            i = math.floor(i / 2)
+        self.nDyn -= 1  # decrement size of heap
+        return v
+
+    def decrease_key(self, id, new_key):
+        if(id < 1 or self.n < id):  # id out of bounds
+            logging.error("ID out of bounds.")
+            return
+        if (self.A[id] <= new_key):
+            logging.debug("no update required.")
+            return  # no update required
+        self.A[id] = new_key
+        # ("A[", id, "]= ", new_key)
+        i = math.floor((id + self.n - 1) / 2)
+        while(i >= 1):
+            if(self.A[self.H[2*i]] < self.A[self.H[2*i + 1]]):
+                self.H[i] = self.H[2*i]
+            else:
+                self.H[i] = self.H[2*i + 1]
+            i = math.floor(i / 2)
+
+    def printAandH(self):
+        print("A: ", self.A)
+        print("H: ", self.H)
