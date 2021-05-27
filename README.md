@@ -8,3 +8,4 @@ Usage:
 
 Or create a custom input graph file using the same format.  
 The 1st line is the number of vertices.  The rest of the lines represent directed edges (a->b):w as "a b w" where a is the source of the edge, b is the destination, and w is the weight (all weights must be non-negative to use Dijkstra's algorithm).
+Vertex 1 is the source vertext.
