@@ -1,8 +1,7 @@
 # Dijkstra
 Implements Dijkstra's algorithm to solve the single source shortest path problem in O((|V|+|E|)lg|V|) time.  A heap data structure is implemented and used for the priority queue.  
 
-Usage:
-
+## Usage
 * `python asn3.py infile.txt` – Run using the 25 vertex input file
 * `python asn3.py test2.txt` – Run using the 5 vertex input file
 
